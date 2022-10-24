@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <form id="myForm">
+        <label for="">Choose Experiment</label>
+        <input type="number" id="exp" />
+        <label for="">Choose Description</label>
+        <input type="text" id="des" />
+        <label for="">Category</label>
+        <select name="cat" id="mySelect">
+          <option value="food">food</option>
+          <option value="movie">movie</option>
+          <option value="electricity">electricity</option>
+          <option value="fuel">fuel</option>
+        </select>
+        <input type="button" value="Add Expense" onclick="getOption()" />
+      </form>
+    </div>
+    <p id="demo"></p>
+
+    <script>
+      function getOption() {
+        var exp = document.getElementById("exp").value;
+        var des = document.getElementById("des").value;
+        var select = document.getElementById("mySelect");
+        // document.getElementById("demo").innerHTML =
+        //   select.options[select.selectedIndex].text;
+        // const para = document.createElement("p");
+        // para.innerText =
+        //   String(exp) +
+        //   " " +
+        //   des +
+        //   " " +
+        //   select.options[select.selectedIndex].text +
+        //   "\n";
+        const sel = select.options[select.selectedIndex].text;
+        const data = des + " " + sel;
+        if (exp && data) {
+          localStorage.setItem(exp, data);
+          // location.reload();
+        }
+        // location.reload();
+
+        for (let i = 0; i < localStorage.length; i++) {
+          const key1 = localStorage.key(i);
+          const value1 = localStorage.getItem(key1);
+          const para = document.createElement("p");
+          para.innerText = key1 + value1;
+
+          document.body.appendChild(para);
+        }
+
+        const btn = document.createElement("button");
+        btn.innerHTML = "Delete Button";
+        localStorage.setItem("exp", exp);
+        btn.onclick = function () {
+          alert("Delete is clicked");
+        };
+        document.body.appendChild(btn);
+        let btn2 = document.createElement("button");
+        btn2.innerHTML = "Edit Button";
+        btn2.onclick = function () {
+          alert("Edit is clicked");
+        };
+        document.body.appendChild(btn2);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,75 @@
+<html lang="en">
+  <body>
+    <form onsubmit="SavetoDB(event)">
+      <label>Choose Expense Amount</label>
+      <input type="number" name="eamount" required id="expenseAmount" />
+      <label>Choose description</label>
+      <input type="text" name="edescription" required id="expenseDescription" />
+      <label>Choose a categoty</label>
+      <input list="category" name="category" id="catList" />
+      <datalist id="category">
+        <option value="fuel"></option>
+        <option value="Movie"></option>
+        <option value="trip"></option>
+        <option value="food"></option>
+      </datalist>
+      <button>Add Expense</button>
+    </form>
+    <ul id="expens"></ul>
+
+    <script>
+      function SavetoDB(event) {
+        event.preventDefault();
+        const Amount = event.target.eamount.value;
+        const Description = event.target.edescription.value;
+        const Cat = event.target.category.value;
+
+        const obj = {
+          Amount,
+          Description,
+          Cat,
+        };
+
+        localStorage.setItem(obj.Description, JSON.stringify(obj));
+        ListItem(obj);
+      }
+
+      window.addEventListener("DOMContentLoaded", (event) => {
+        Object.keys(localStorage).forEach((key) => {
+          const user = JSON.parse(localStorage.getItem(key));
+          ListItem(user);
+        });
+      });
+
+      function ListItem(user) {
+        const parentNode = document.getElementById("expens");
+        const UlE = `<li id='${user.Description}'>${user.Amount} - ${user.Description} -${user.Cat} 
+                                            <button onclick=deleteUser('${user.Description}')>Delete</button>
+                                            <button onclick=EditUser('${user.Description}','${user.Amount}','${user.Cat}')>Edit</button>
+                                         </li>
+                                        `;
+
+        parentNode.innerHTML += UlE;
+      }
+
+      function deleteUser(Description) {
+        localStorage.removeItem(Description);
+        removeItemFromScreen(Description);
+      }
+
+      function removeItemFromScreen(Description) {
+        const parentNode = document.getElementById("expens");
+        const elem = document.getElementById(Description);
+
+        parentNode.removeChild(elem);
+      }
+      function EditUser(Description, Amount, Cat) {
+        // Having trouble in edit
+        document.getElementById("expenseDescription").value = Description;
+        document.getElementById("expenseAmount").value = Amount;
+        document.getElementById("catList").value = Cat;
+        deleteUser(Description);
+      }
+    </script>
+  </body>
+</html>
